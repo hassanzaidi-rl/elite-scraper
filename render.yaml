@@ -10,7 +10,7 @@ services:
     envVars:
       - key: PLAYWRIGHT_BROWSERS_PATH
         value: /mnt/cache/playwright
-    disk:
-      name: scraper-cache
-      mountPath: /mnt/cache
-      sizeGB: 1
+    disks:
+      - name: scraper-cache
+        mountPath: /mnt/cache
+        sizeGB: 1
