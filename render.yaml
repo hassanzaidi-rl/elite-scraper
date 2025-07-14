@@ -5,12 +5,8 @@ services:
     plan: starter
     buildCommand: >
       pip install -r requirements.txt &&
-      PLAYWRIGHT_BROWSERS_PATH=/mnt/cache/playwright playwright install chromium
+      playwright install chromium
     startCommand: python scrap_players.py
-    disks:
-      - name: scraper-cache
-        mountPath: /mnt/cache
-        sizeGB: 1
     envVars:
       - key: PLAYWRIGHT_BROWSERS_PATH
         value: /mnt/cache/playwright
