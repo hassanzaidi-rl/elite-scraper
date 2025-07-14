@@ -83,9 +83,13 @@ def scrape_from_page(start_page):
         profile_page = context.new_page()
 
         output_exists = os.path.exists(CSV_FILE)
-        with open(CSV_FILE, mode="w", newline="", encoding="utf-8") as f:
+        file_mode = "a" if output_exists else "w"
+
+        with open(CSV_FILE, mode=file_mode, newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow(["Name", "Position", "Nationality", "Age", "DOB", "Jersey", "Height", "Weight", "Team", "Profile URL"])
+            if not output_exists:
+                writer.writerow(["Name", "Position", "Nationality", "Age", "DOB", "Jersey", "Height", "Weight", "Team", "Profile URL"])
+
 
             for page_num in range(start_page, 999999):
                 print(f"[→] Navigating to page {page_num}...")
