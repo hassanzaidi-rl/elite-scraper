@@ -5,7 +5,7 @@ services:
     plan: starter
     buildCommand: >
       pip install -r requirements.txt &&
-      playwright install chromium
+      PLAYWRIGHT_BROWSERS_PATH=/mnt/cache/playwright playwright install chromium
     startCommand: python scrap_players.py
     envVars:
       - key: PLAYWRIGHT_BROWSERS_PATH
