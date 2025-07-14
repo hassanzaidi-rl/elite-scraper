@@ -3,10 +3,16 @@ services:
     name: elite-scraper
     env: python
     plan: starter
-    buildCommand: >
-      pip install -r requirements.txt &&
-      PLAYWRIGHT_BROWSERS_PATH=/mnt/cache/playwright playwright install chromium
-    startCommand: python scrap_players.py
+    buildCommand: |
+      pip install -r requirements.txt
+    startCommand: |
+      mkdir -p /mnt/cache/playwright && \
+      PLAYWRIGHT_BROWSERS_PATH=/mnt/cache/playwright playwright install chromium && \
+      python scrap_players.py
+    disks:
+      - name: scraper-cache
+        mountPath: /mnt/cache
+        sizeGB: 1
     envVars:
       - key: PLAYWRIGHT_BROWSERS_PATH
         value: /mnt/cache/playwright
