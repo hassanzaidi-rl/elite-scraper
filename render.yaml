@@ -2,6 +2,7 @@ services:
   - type: worker
     name: elite-scraper
     env: python
+    plan: starter
     buildCommand: |
       pip install -r requirements.txt
       PLAYWRIGHT_BROWSERS_PATH=/mnt/cache/playwright playwright install
