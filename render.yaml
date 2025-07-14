@@ -7,10 +7,10 @@ services:
       pip install -r requirements.txt
       PLAYWRIGHT_BROWSERS_PATH=/mnt/cache/playwright playwright install
     startCommand: python scrap_players.py
-    envVars:
-      - key: PLAYWRIGHT_BROWSERS_PATH
-        value: /mnt/cache/playwright
     disks:
       - name: scraper-cache
         mountPath: /mnt/cache
         sizeGB: 1
+    envVars:
+      - key: PLAYWRIGHT_BROWSERS_PATH
+        value: /mnt/cache/playwright
