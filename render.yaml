@@ -1,0 +1,9 @@
+services:
+  - type: worker
+    name: elite-scraper
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      playwright install
+    startCommand: python scrap_players.py
+    autoDeploy: false
