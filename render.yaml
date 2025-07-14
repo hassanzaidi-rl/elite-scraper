@@ -4,6 +4,12 @@ services:
     env: python
     buildCommand: |
       pip install -r requirements.txt
-      playwright install
+      PLAYWRIGHT_BROWSERS_PATH=/mnt/cache/playwright playwright install
     startCommand: python scrap_players.py
-    autoDeploy: false
+    envVars:
+      - key: PLAYWRIGHT_BROWSERS_PATH
+        value: /mnt/cache/playwright
+    disk:
+      name: scraper-cache
+      mountPath: /mnt/cache
+      sizeGB: 1
