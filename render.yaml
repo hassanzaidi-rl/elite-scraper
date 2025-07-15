@@ -3,11 +3,8 @@ services:
     name: elite-scraper
     env: python
     plan: starter
-    buildCommand: |
-      PLAYWRIGHT_BROWSERS_PATH=/tmp/playwright-cache \
-      pip install -r requirements.txt && \
-      playwright install chromium
-    startCommand: PLAYWRIGHT_BROWSERS_PATH=/tmp/playwright-cache python scrap_players.py
+    buildCommand: pip install -r requirements.txt
+    startCommand: bash -c "playwright install chromium && python scrap_players.py"
     envVars:
       - key: GITHUB_TOKEN
         value: DrObhZaFAjcQqvbm2V0S6VQht1FZVECnIwvEyCwt7/4
