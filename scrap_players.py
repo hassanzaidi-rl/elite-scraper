@@ -30,36 +30,32 @@ def upload_to_github():
 
     with open(CSV_FILE, "rb") as f:
         content = f.read()
-    encoded_content = content.encode("base64") if hasattr(content, "encode") else content
+
+    # GitHub API requires base64-encoded string
+    import base64
+    encoded_content = base64.b64encode(content).decode("utf-8")
 
     url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{GITHUB_PATH}"
 
-    # Get SHA if file already exists (for updating)
+    # Check if file already exists to get SHA
     sha = None
-    get_response = requests.get(url, headers={
+    headers = {
         "Authorization": f"Bearer {token}",
         "Accept": "application/vnd.github+json"
-    })
+    }
+    get_response = requests.get(url, headers=headers)
     if get_response.status_code == 200:
         sha = get_response.json().get("sha")
 
-    data = {
+    payload = {
         "message": f"Update player CSV: {datetime.utcnow().isoformat()}",
-        "content": content.decode("utf-8").encode("base64").decode("utf-8") if isinstance(content, bytes) else encoded_content,
+        "content": encoded_content,
         "branch": GITHUB_BRANCH
     }
     if sha:
-        data["sha"] = sha
+        payload["sha"] = sha
 
-    response = requests.put(
-        url,
-        headers={
-            "Authorization": f"Bearer {token}",
-            "Accept": "application/vnd.github+json"
-        },
-        json=data
-    )
-
+    response = requests.put(url, headers=headers, json=payload)
     if response.status_code in [200, 201]:
         print("[✓] CSV uploaded to GitHub.")
     else:
@@ -86,7 +82,6 @@ def scrape_from_page(start_page):
                 page.goto(f"https://www.eliteprospects.com/search/player?status=active&page={page_num}", timeout=30000)
 
                 players = page.locator("table tbody tr")
-
                 if players.count() == 0:
                     print("[✓] No more players.")
                     break
@@ -136,6 +131,8 @@ def scrape_from_page(start_page):
                             print(f"[!] Timeout for {name} ({position}): {full_url}")
                         finally:
                             detail_page.close()
+                    except Exception as e:
+                        print(f"[!] Failed to extract row {i+1} on page {page_num}: {e}")
 
                 write_checkpoint(page_num)
                 page_num += 1
