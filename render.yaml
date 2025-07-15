@@ -6,3 +6,6 @@ services:
     buildCommand: |
       pip install -r requirements.txt && playwright install chromium
     startCommand: python scrap_players.py
+    envVars:
+      - key: GITHUB_TOKEN
+        value: DrObhZaFAjcQqvbm2V0S6VQht1FZVECnIwvEyCwt7/4
