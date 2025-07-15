@@ -4,16 +4,5 @@ services:
     env: python
     plan: starter
     buildCommand: |
-      apt-get update && \
-      apt-get install -y git && \
-      pip install -r requirements.txt && \
-      playwright install chromium
-    startCommand: |
-      git config --global credential.helper store && \
-      git config --global url."https://${GIT_USER}:${GIT_PASS}@github.com".insteadOf "https://github.com" && \
-      python scrap_players.py
-    envVars:
-      - key: GIT_USER
-        value: hassanzaidi-rl
-      - key: GIT_PASS
-        value: DrObhZaFAjcQqvbm2V0S6VQht1FZVECnIwvEyCwt7/4
+      pip install -r requirements.txt && playwright install chromium
+    startCommand: python scrap_players.py
